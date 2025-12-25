@@ -6,6 +6,10 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 export function Chat() {
   const { messages, sendMessage, isLoading } = useChat({
@@ -78,7 +82,7 @@ export function Chat() {
                     </div>
                     <div
                       className={cn(
-                        'rounded-2xl px-4 py-2 text-sm shadow-sm',
+                        'overflow-hidden rounded-2xl px-4 py-2 text-sm shadow-sm',
                         m.role === 'user'
                           ? 'rounded-tr-none bg-primary text-primary-foreground'
                           : 'rounded-tl-none border border-slate-100 bg-white text-slate-800',
@@ -87,8 +91,51 @@ export function Chat() {
                       {m.parts.map(
                         (part, i) =>
                           part.type === 'text' && (
-                            <div key={i} className="whitespace-pre-wrap leading-relaxed">
-                              {part.content}
+                            <div
+                              key={i}
+                              className={cn(
+                                'prose prose-sm max-w-none break-words',
+                                m.role === 'user' ? 'prose-invert' : 'prose-slate',
+                              )}
+                            >
+                              <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                  code({ node, inline, className, children, ...props }: any) {
+                                    const match = /language-(\w+)/.exec(className || '')
+                                    return !inline && match ? (
+                                      <SyntaxHighlighter
+                                        {...props}
+                                        style={oneDark}
+                                        language={match[1]}
+                                        PreTag="div"
+                                        customStyle={{
+                                          margin: 0,
+                                          borderRadius: '0.375rem',
+                                          fontSize: '0.8rem',
+                                        }}
+                                      >
+                                        {String(children).replace(/\n$/, '')}
+                                      </SyntaxHighlighter>
+                                    ) : (
+                                      <code
+                                        className={cn(
+                                          'rounded px-1 py-0.5 font-mono text-xs font-medium',
+                                          m.role === 'user'
+                                            ? 'bg-primary-foreground/20 text-primary-foreground'
+                                            : 'bg-slate-100 text-slate-800',
+                                          className,
+                                        )}
+                                        {...props}
+                                      >
+                                        {children}
+                                      </code>
+                                    )
+                                  },
+                                }}
+                              >
+                                {part.content}
+                              </ReactMarkdown>
                             </div>
                           ),
                       )}
