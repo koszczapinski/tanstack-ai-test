@@ -20,8 +20,10 @@ app.post('/api/chat', async (c) => {
       return c.json({ error: 'Messages are required' }, 400)
     }
 
+    const model = c.req.query('model') || 'gpt-4o'
+
     const chatStream = chat({
-      adapter: createOpenaiChat('gpt-4o', process.env.OPENAI_API_KEY),
+      adapter: createOpenaiChat(model, process.env.OPENAI_API_KEY),
       messages,
     })
 
