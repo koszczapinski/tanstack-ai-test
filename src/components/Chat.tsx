@@ -12,8 +12,9 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 export function Chat() {
+  const [model, setModel] = useState('gpt-4o')
   const { messages, sendMessage, isLoading } = useChat({
-    connection: fetchHttpStream('/api/chat'),
+    connection: fetchHttpStream(`/api/chat?model=${model}`),
   })
 
   const [input, setInput] = useState('')
@@ -39,11 +40,24 @@ export function Chat() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
       <Card className="flex h-[700px] w-full max-w-2xl flex-col shadow-xl">
-        <CardHeader className="rounded-t-xl border-b bg-white">
+        <CardHeader className="flex flex-row items-center justify-between rounded-t-xl border-b bg-white">
           <CardTitle className="flex items-center gap-2 text-xl font-bold text-slate-800">
             <Bot className="h-6 w-6 text-primary" />
             TanStack AI Chat
           </CardTitle>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-slate-500">Model:</span>
+            <select
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              className="rounded-md border border-slate-200 bg-white px-3 py-1 text-sm text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            >
+              <option value="gpt-4o">GPT-4o</option>
+              <option value="gpt-4o-mini">GPT-4o Mini</option>
+              <option value="gpt-4-turbo">GPT-4 Turbo</option>
+              <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+            </select>
+          </div>
         </CardHeader>
 
         <CardContent className="flex-1 overflow-hidden p-0">
