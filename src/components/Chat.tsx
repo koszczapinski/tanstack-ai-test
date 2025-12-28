@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useChat, fetchHttpStream } from '@tanstack/ai-react'
-import { Send, User, Bot, Loader2 } from 'lucide-react'
+import { Send, User, Bot, Loader2, RefreshCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,7 +13,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 export function Chat() {
   const [model, setModel] = useState('gpt-4o')
-  const { messages, sendMessage, isLoading } = useChat({
+  const { messages, sendMessage, isLoading, setMessages } = useChat({
     connection: fetchHttpStream(`/api/chat?model=${model}`),
   })
 
@@ -181,6 +181,16 @@ export function Chat() {
 
         <CardFooter className="rounded-b-xl border-t bg-white p-4">
           <form onSubmit={handleSend} className="flex w-full gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => setMessages([])}
+              title="Reset chat"
+              className="h-11 w-11 shrink-0"
+            >
+              <RefreshCcw className="h-5 w-5" />
+            </Button>
             <Input
               placeholder="Message TanStack AI..."
               value={input}
