@@ -1,73 +1,47 @@
-# React + TypeScript + Vite
+# TanStack AI Chat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Overview
 
-Currently, two official plugins are available:
+This project is a Full-Stack AI Chat Application demonstrating the capabilities of the `@tanstack/ai` library. It features a modern, responsive chat interface built with React and a Node.js/Hono backend that interfaces with OpenAI.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Key Technologies:**
 
-## React Compiler
+*   **Frontend:** React 19, Vite, TypeScript, Tailwind CSS, Shadcn/UI Components.
+*   **Backend:** Node.js, Hono.
+*   **AI Integration:** `@tanstack/ai`, `@tanstack/ai-react`, `@tanstack/ai-openai`, OpenAI API.
+*   **Utilities:** `lucide-react` (Icons), `react-markdown` (Markdown rendering), `concurrently` (Script management).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Architecture
 
-## Expanding the ESLint configuration
+*   **Entry Point (Frontend):** `src/main.tsx` mounts the React application.
+*   **Entry Point (Backend):** `server.js` starts the Hono server.
+*   **Main Component:** `src/components/Chat.tsx` contains the chat UI and logic, utilizing the `useChat` hook for state management and streaming communication with the backend.
+*   **API Layer:** The backend exposes a `/api/chat` endpoint that accepts messages and streams back the AI response.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Building and Running
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
+*   Node.js and npm installed.
+*   `OPENAI_API_KEY` environment variable set in a `.env` file (see `server.js` usage).
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Key Commands
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+| Command | Description |
+| :--- | :--- |
+| `npm start` | **Recommended.** Runs both the frontend (Vite) and backend (Hono) concurrently. |
+| `npm run dev` | Starts only the Vite frontend development server. |
+| `npm run server` | Starts only the Hono backend server on port 3000. |
+| `npm run build` | Compiles the TypeScript code and builds the frontend for production. |
+| `npm run lint` | Runs ESLint and Prettier to check and fix code style issues. |
+| `npm run format` | Runs Prettier to format the codebase. |
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Development Conventions
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+*   **Styling:** Use Tailwind CSS utility classes. The `cn` helper function (in `src/lib/utils.ts`) is used for conditional class merging, especially within UI components.
+*   **Components:** 
+    *   UI components (buttons, inputs, cards) are located in `src/components/ui`.
+    *   Feature-specific components (like `Chat.tsx`) are in `src/components`.
+*   **AI Integration:** 
+    *   Frontend uses `useChat` with `fetchHttpStream` adapter.
+    *   Backend uses `chat` with `createOpenaiChat` adapter.
+*   **Environment:** Sensitive keys (API keys) are managed via `dotenv` and should be placed in a `.env` file, never committed to version control.
