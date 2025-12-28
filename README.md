@@ -2,19 +2,19 @@
 
 ## Project Overview
 
-This project is a Full-Stack AI Chat Application demonstrating the capabilities of the `@tanstack/ai` library. It features a modern, responsive chat interface built with React and a Node.js/Express backend that interfaces with OpenAI.
+This project is a Full-Stack AI Chat Application demonstrating the capabilities of the `@tanstack/ai` library. It features a modern, responsive chat interface built with React and a Node.js/Hono backend that interfaces with OpenAI.
 
 **Key Technologies:**
 
 *   **Frontend:** React 19, Vite, TypeScript, Tailwind CSS, Shadcn/UI Components.
-*   **Backend:** Node.js, Express.js.
+*   **Backend:** Node.js, Hono.
 *   **AI Integration:** `@tanstack/ai`, `@tanstack/ai-react`, `@tanstack/ai-openai`, OpenAI API.
 *   **Utilities:** `lucide-react` (Icons), `react-markdown` (Markdown rendering), `concurrently` (Script management).
 
 ## Architecture
 
 *   **Entry Point (Frontend):** `src/main.tsx` mounts the React application.
-*   **Entry Point (Backend):** `server.js` starts the Express server.
+*   **Entry Point (Backend):** `server.js` starts the Hono server.
 *   **Main Component:** `src/components/Chat.tsx` contains the chat UI and logic, utilizing the `useChat` hook for state management and streaming communication with the backend.
 *   **API Layer:** The backend exposes a `/api/chat` endpoint that accepts messages and streams back the AI response.
 
@@ -28,9 +28,9 @@ This project is a Full-Stack AI Chat Application demonstrating the capabilities 
 
 | Command | Description |
 | :--- | :--- |
-| `npm start` | **Recommended.** Runs both the frontend (Vite) and backend (Express) concurrently. |
+| `npm start` | **Recommended.** Runs both the frontend (Vite) and backend (Hono) concurrently. |
 | `npm run dev` | Starts only the Vite frontend development server. |
-| `npm run server` | Starts only the Express backend server on port 3000. |
+| `npm run server` | Starts only the Hono backend server on port 3000. |
 | `npm run build` | Compiles the TypeScript code and builds the frontend for production. |
 | `npm run lint` | Runs ESLint and Prettier to check and fix code style issues. |
 | `npm run format` | Runs Prettier to format the codebase. |
