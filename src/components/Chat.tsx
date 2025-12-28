@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useChat, fetchHttpStream } from '@tanstack/ai-react'
-import { Send, User, Bot, Loader2, Trash2 } from 'lucide-react'
+import { Send, User, Bot, Loader2, RefreshCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -57,15 +57,6 @@ export function Chat() {
               <option value="gpt-4-turbo">GPT-4 Turbo</option>
               <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
             </select>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setMessages([])}
-              title="Clear chat"
-              className="ml-2 h-8 w-8 text-slate-500 hover:text-red-600"
-            >
-              <Trash2 size={18} />
-            </Button>
           </div>
         </CardHeader>
 
@@ -190,6 +181,16 @@ export function Chat() {
 
         <CardFooter className="rounded-b-xl border-t bg-white p-4">
           <form onSubmit={handleSend} className="flex w-full gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => setMessages([])}
+              title="Reset chat"
+              className="h-11 w-11 shrink-0"
+            >
+              <RefreshCcw className="h-5 w-5" />
+            </Button>
             <Input
               placeholder="Message TanStack AI..."
               value={input}
